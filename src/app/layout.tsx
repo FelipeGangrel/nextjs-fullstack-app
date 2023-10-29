@@ -2,8 +2,11 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { getServerSession } from 'next-auth'
 
-import { cn } from '@/libs/styling'
+import { LoginButton } from '@/components/client-side'
+import { cn } from '@/lib/styling'
+import { SessionProvider } from '@/providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,12 +19,19 @@ type Props = {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: Props) {
+export default async function RootLayout({ children }: Props) {
+  const session = await getServerSession()
+
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'flex flex-col min-h-screen')}>
-        {children}
-      </body>
+      <SessionProvider session={session}>
+        <body className={cn(inter.className, 'flex flex-col min-h-screen')}>
+          <div className="flex flex-row">
+            <LoginButton />
+          </div>
+          {children}
+        </body>
+      </SessionProvider>
     </html>
   )
 }
