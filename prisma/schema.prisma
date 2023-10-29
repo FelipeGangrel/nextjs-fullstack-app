@@ -9,3 +9,61 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int                  @id @default(autoincrement())
+  email     String               @unique
+  name      String
+  role      String               @default("CLIENT") // CLIENT | ADMIN
+  password  String
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  deletedAt DateTime?
+  wishList  ProductsOnWishList[]
+}
+
+model Category {
+  id        Int                    @id @default(autoincrement())
+  name      String
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+  deletedAt DateTime?
+  products  ProductsOnCategories[]
+}
+
+model Product {
+  id         Int                    @id @default(autoincrement())
+  name       String
+  price      Float
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
+  deletedAt  DateTime?
+  categories ProductsOnCategories[]
+  images     ProductImage[]
+  wishList   ProductsOnWishList[]
+}
+
+model ProductsOnCategories {
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+
+  @@id([categoryId, productId])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  filename  String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model ProductsOnWishList {
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+
+  @@id([productId, userId])
+}
