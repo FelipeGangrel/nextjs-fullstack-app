@@ -19,7 +19,7 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'flex fle-col min-h-screen')}>
+      <body className={cn(inter.className, 'flex flex-col min-h-screen')}>
         {children}
       </body>
     </html>
