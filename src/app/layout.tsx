@@ -2,9 +2,10 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { getServerSession } from 'next-auth'
+import { getServerSession, Session } from 'next-auth'
 
 import { LoginButton } from '@/components/client-side'
+import { authOptions } from '@/config/auth'
 import { cn } from '@/lib/styling'
 import { SessionProvider } from '@/providers'
 
@@ -20,7 +21,9 @@ type Props = {
 }
 
 export default async function RootLayout({ children }: Props) {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
+
+  console.log({ session })
 
   return (
     <html lang="en">

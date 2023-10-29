@@ -2,24 +2,24 @@ import { DefaultSession, DefaultUser } from 'next-auth'
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    role?: string
+    role?: string | null
   }
 }
 
 declare module 'next-auth/adapters' {
   interface AdapterUser {
-    role?: string
+    role?: string | null
   }
 }
 
 declare module 'next-auth' {
   interface Session {
-    user: {
-      role?: string
-    } & DefaultSession['user']
+    user: DefaultSession['user'] & {
+      role?: string | null
+    }
   }
 
   interface User {
-    role?: string
+    role?: string | null
   }
 }
