@@ -2,10 +2,8 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { getServerSession, Session } from 'next-auth'
 
-import { LoginButton } from '@/components/client-side'
-import { authOptions } from '@/config/auth'
+import { getServerSession } from '@/lib/session'
 import { cn } from '@/lib/styling'
 import { SessionProvider } from '@/providers'
 
@@ -21,17 +19,12 @@ type Props = {
 }
 
 export default async function RootLayout({ children }: Props) {
-  const session = await getServerSession(authOptions)
-
-  console.log({ session })
+  const session = await getServerSession()
 
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={cn(inter.className, 'flex flex-col min-h-screen')}>
-          <div className="flex flex-row">
-            <LoginButton />
-          </div>
+        <body className={cn(inter.className, 'flex min-h-screen flex-col')}>
           {children}
         </body>
       </SessionProvider>
